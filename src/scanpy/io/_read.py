@@ -529,8 +529,10 @@ def read_10x_mtx(
     Parameters
     ----------
     path
-        Path to directory for `.mtx` and `.tsv` files (or `.mtx.gz` and `.tsv.gz`),
-        e.g. './filtered_feature_bc_matrix/'.
+        Path to directory containing `matrix.mtx.gz`, `features.tsv.gz` and
+        `barcodes.tsv.gz` for Cell Ranger v3+, e.g. './filtered_feature_bc_matrix/'.
+        For uncompressed v3+ files, set `compressed=False`. Legacy (v2-) directories
+        contain `matrix.mtx`, `genes.tsv` and `barcodes.tsv` without gzip compression.
     var_names
         The variables index.
     make_unique
@@ -547,15 +549,16 @@ def read_10x_mtx(
     prefix
         Any prefix before `matrix.mtx.gz`, `features.tsv.gz` and `barcodes.tsv.gz`
         (or `matrix.mtx`, `genes.tsv` and `barcodes.tsv` for legacy files).
+        With `compressed=False`, v3+ filenames omit the `.gz` suffix.
         For instance, if the files are named `patientA_matrix.mtx.gz`,
         `patientA_features.tsv.gz` and `patientA_barcodes.tsv.gz`, the prefix
         is `patientA_`.
         (Default: no prefix)
     compressed
-        Whether to expect Cell Ranger v3+ files (`matrix.mtx`, `features.tsv`, `barcodes.tsv`)
-        to be gzipped. If True, '.gz' suffix is appended to filenames.
-        Set to False for STARsolo output.
-        Has no effect on legacy (v2-) files.
+        Whether to expect Cell Ranger v3+ files (`matrix.mtx`, `features.tsv`,
+        `barcodes.tsv`) to be gzipped. If `True`, the `.gz` suffix is appended
+        to filenames. Set to `False` for uncompressed files, such as STARsolo output.
+        Has no effect on legacy (v2-) files, which must be uncompressed.
     sparse_format
         The sparse matrix format.
 
